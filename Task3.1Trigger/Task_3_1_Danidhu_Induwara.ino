@@ -8,10 +8,9 @@ char pass[] = "sanikypisso";
 WiFiSSLClient client;
 BH1750 lightMeter;
 
-// Change this if needed after testing
 const float LIGHT_THRESHOLD = 100.0;
 
-// Keeps track of previous light state
+// Keep track of previous light state
 bool sunlightPresent = false;
 
 const char IFTTT_HOST[] = "maker.ifttt.com";
