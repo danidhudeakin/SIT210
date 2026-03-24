@@ -3,24 +3,53 @@ const int hallwayLight = 12;  // external LED
 const int buttonPin = 4;      // switch
 
 void setup() {
+  setupPins();
+}
+
+void loop() { //I have seperated my code into different modules
+  if (isButtonPressed()) {
+    runLightingSequence();
+    waitForButtonRelease();
+  }
+}
+
+void setupPins() {
   pinMode(porchLight, OUTPUT);
   pinMode(hallwayLight, OUTPUT);
   pinMode(buttonPin, INPUT_PULLUP);
 }
 
-void loop() {
-  if (digitalRead(buttonPin) == LOW) {
-    digitalWrite(porchLight, HIGH);
-    digitalWrite(hallwayLight, HIGH);
+bool isButtonPressed() {
+  return digitalRead(buttonPin) == LOW;
+}
 
-    delay(30000);
-    digitalWrite(porchLight, LOW);
+void turnLightsOn() {
+  digitalWrite(porchLight, HIGH);
+  digitalWrite(hallwayLight, HIGH);
+}
 
-    delay(30000);
-    digitalWrite(hallwayLight, LOW);
+void turnPorchLightOff() {
+  digitalWrite(porchLight, LOW);
+}
 
-    while (digitalRead(buttonPin) == LOW) {
-      delay(10);
-    }
+void turnHallwayLightOff() {
+  digitalWrite(hallwayLight, LOW);
+}
+
+void waitForThirtySeconds() {
+  delay(30000);
+}
+
+void waitForButtonRelease() {
+  while (digitalRead(buttonPin) == LOW) {
+    delay(10);
   }
+}
+
+void runLightingSequence() {
+  turnLightsOn();
+  waitForThirtySeconds();
+  turnPorchLightOff();
+  waitForThirtySeconds();
+  turnHallwayLightOff();
 }
