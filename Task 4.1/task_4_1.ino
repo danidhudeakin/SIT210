@@ -11,13 +11,13 @@ BH1750 lightMeter;
 volatile bool motionInterruptFlag = false;
 volatile bool switchInterruptFlag = false;
 
-const float LIGHT_THRESHOLD = 50.0;   // adjust if needed
+const float LIGHT_THRESHOLD = 50.0;
 unsigned long lastSwitchInterrupt = 0;
 unsigned long lastMotionInterrupt = 0;
 
 void motionISR() {
   unsigned long currentTime = millis();
-  if (currentTime - lastMotionInterrupt > 1000) {   // simple cooldown
+  if (currentTime - lastMotionInterrupt > 1000) {
     motionInterruptFlag = true;
     lastMotionInterrupt = currentTime;
   }
@@ -25,7 +25,7 @@ void motionISR() {
 
 void switchISR() {
   unsigned long currentTime = millis();
-  if (currentTime - lastSwitchInterrupt > 300) {    // debounce
+  if (currentTime - lastSwitchInterrupt > 300) {
     switchInterruptFlag = true;
     lastSwitchInterrupt = currentTime;
   }
@@ -97,8 +97,8 @@ void handleMotionInterrupt(float lux) {
     Serial.println("Motion detected!");
 
     if (lux < LIGHT_THRESHOLD) {
-      Serial.println("It is dark. Toggling LED1 and LED2.");
-      toggleLights();
+      Serial.println("It is dark. Turning lights ON.");
+      turnLightsOn();
     } else {
       Serial.println("It is bright. Lights remain unchanged.");
     }
@@ -112,6 +112,11 @@ void handleSwitchInterrupt() {
     Serial.println("Slider switch activated. Toggling LED1 and LED2.");
     toggleLights();
   }
+}
+
+void turnLightsOn() {
+  digitalWrite(LED1_PIN, HIGH);
+  digitalWrite(LED2_PIN, HIGH);
 }
 
 void toggleLights() {
